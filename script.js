@@ -5,21 +5,21 @@ function setupGrid() {
     const div = document.createElement("div");
     div.classList.add("noSelect");
     div.setAttribute("id", i);
-    div.addEventListener("click", changeBG);
+    div.addEventListener("click", chooseBlock);
     container.appendChild(div);
   }
 }
+setupGrid();
 
-function changeBG(e) {
-  if (e.target.innerHTML != "O") {
-    e.target.innerHTML = "O";
+function chooseBlock(e) {
+  if (e.target.innerText === "") {
+    e.target.innerText = "X";
     e.target.style.backgroundColor = "rgb(80,70,200)";
   } else {
-    e.target.innerHTML = "X";
-    e.target.style.backgroundColor = "rgb(230,90,90)";
+    return;
   }
 
-  checkWinCondition();
+  checkWinCondition(e);
 }
 
 // const winningConditions = [
@@ -33,8 +33,10 @@ function changeBG(e) {
 //     [2, 4, 6]
 // ];
 
-function checkWinCondition() {
+var splicedDivArr = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+function checkWinCondition(e) {
   let a0, a1, a2, a3, a4, a5, a6, a7, a8;
+
   a0 = document.getElementById("0").innerText;
   a1 = document.getElementById("1").innerText;
   a2 = document.getElementById("2").innerText;
@@ -56,7 +58,24 @@ function checkWinCondition() {
     (a2 === "X" && a4 === "X" && a6 === "X")
   ) {
     console.log("win");
+  } else {
+    //TODO: FIX AI
+    splicedDivArr.splice(e.target.id, 1);
+    let randNum =
+      splicedDivArr[Math.floor(Math.random() * splicedDivArr.length)];
+    console.log("Num:" + randNum + ", Splice: " + splicedDivArr);
+    let aInfinit = document.getElementById(randNum.toString());
+    aInfinit.innerText = "O";
+    splicedDivArr.splice(randNum, 1);
   }
 }
 
-setupGrid();
+const createPlayer = (pName) => {
+  const sayHello = () => console.log("hello: " + pName);
+  return { pName, sayHello };
+};
+
+// var player = createPlayer(prompt("Please enter your name", "Name"));
+
+console.log(player.pName);
+player.sayHello();
